@@ -1,22 +1,53 @@
-import React, { Component } from 'react';
+import React, { PropTypes, Component } from 'react';
+
+import AccountsUIWrapper from './AccountsUIWrapper.jsx';
+import { createContainer } from 'meteor/react-meteor-data';
 
 
-
-
-// App component - represents the whole app
-export default class App extends Component {
-
-  render() {
+function RenderLoggedIn(props) {
     return (
       <div className="container">
+        <AccountsUIWrapper />
         <header>
           <h1>Coffee-Panic</h1>
           <ShoppingList />
         </header>
       </div>
     );
+}
+
+function RenderGuest(props) {
+    return (
+      <div className="container">
+        <AccountsUIWrapper />
+        <header>
+          <h1>Coffee-Panic</h1>
+          Please log in to view shopping list
+        </header>
+      </div>
+    );
+}
+
+
+// App component - represents the whole app
+class App extends Component {
+  render() {
+  	if (this.props.user) {
+      return <RenderLoggedIn />
+  	}
+    return <RenderGuest />;
   }
 }
+
+App.propTypes = {
+   user: PropTypes.object,
+};
+
+export default createContainer(() => {
+  return {
+    user: Meteor.user(),
+  };
+}, App);
 
 
 class ShoppingListItem extends Component {
