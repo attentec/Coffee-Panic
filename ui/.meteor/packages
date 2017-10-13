@@ -24,3 +24,4 @@ accounts-google
 react-meteor-data
 http
 simple:rest
+autopublish
