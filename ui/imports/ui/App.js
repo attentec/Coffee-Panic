@@ -30,25 +30,42 @@ function RenderGuest(props) {
 
 function CoffeeList(props) {
     const timeOption = { hour: "2-digit", minute: "2-digit"}
+
+    const tableStyle = {
+        borderCollapse: "collapse",
+        width: "100%",
+        marginBottom: 20
+    }
+
+    const cellStyle = {
+        border: "1px solid #dddddd",
+        textAlign: "left",
+        padding: 8
+    }
+
+    const rowStyle = {
+        backgroundColor: "#dddddd"
+    }
+
     return (
-        <table>
+        <table style={tableStyle}>
             <thead>
                 <tr>
-                    <th>ScaleId</th>
-                    <th>Timestamp</th>
-                    <th>Coffe weight(g)</th>
+                    <th style={cellStyle}>ScaleId</th>
+                    <th style={cellStyle}>Timestamp</th>
+                    <th style={cellStyle}>Coffe weight(g)</th>
                 </tr>
             </thead>
             <tbody>
-                {props.measurements.map((m) => 
-                    <tr key={m._id._str}>
-                        <td>
+                {props.measurements.map((m, index) => 
+                    <tr key={m._id._str} style={index % 2 == 0 ? rowStyle : {}}>
+                        <td style={cellStyle}>
                             {m.scaleId}
                         </td>
-                        <td>
+                        <td style={cellStyle}>
                             {m.timestamp.toLocaleDateString('sv-SE', timeOption)}
                         </td>
-                        <td>
+                        <td style={cellStyle}>
                             {m.valueInGrams}  
                         </td>
                     </tr>
@@ -170,9 +187,24 @@ class ShoppingList extends Component {
 		};
 	}
  
+    groupMeasurements(measurements) {
+        let groupedMeasurements = {}
+        for(let m of measurements){
+            if (!groupedMeasurements[m.scaleId]){
+                groupedMeasurements[m.scaleId] = [m]
+            } else {
+                groupedMeasurements[m.scaleId].push(m);                
+            }
+        }
+        let listgroupedMeasurements = []
+        for (const key of Object.keys(groupedMeasurements)) {
+            listgroupedMeasurements.push(groupedMeasurements[key]);
+        }
+        return listgroupedMeasurements;
+    }
 
 	render() {
-
+        let groupedMeasurements = this.groupMeasurements(this.props.measurements);
 		var removeItemCallback = this.removeItemFromShoppingList.bind(this);
 		var buylist = [];
 		this.state.inkopslista.map(function (item) {if (item.out_of_stock) {buylist.push(item)}})
@@ -181,7 +213,7 @@ class ShoppingList extends Component {
 					return (<ShoppingListItem key={item.name} item={item} callback={removeItemCallback} />)})}
 				<Inventory items={this.state.inkopslista} callback={this.addItemToShoppingList.bind(this)} />
                 <div className="coffee">
-                <CoffeeList measurements={this.props.measurements}/>
+                {groupedMeasurements.map((group) => <CoffeeList key={group[0].scaleId}measurements={group} />)}
                 </div>
             </div>
 		);
