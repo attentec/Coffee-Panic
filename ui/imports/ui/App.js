@@ -31,9 +31,30 @@ function RenderGuest(props) {
 function CoffeeList(props) {
     const timeOption = { hour: "2-digit", minute: "2-digit"}
     return (
-        <ul>
-            {props.measurements.map((m) => <li key={m._id._str}>{m.timestamp.toLocaleDateString('sv-SE', timeOption)}: {m.valueInGrams}g</li>)}
-        </ul>
+        <table>
+            <thead>
+                <tr>
+                    <th>ScaleId</th>
+                    <th>Timestamp</th>
+                    <th>Coffe weight(g)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {props.measurements.map((m) => 
+                    <tr key={m._id._str}>
+                        <td>
+                            {m.scaleId}
+                        </td>
+                        <td>
+                            {m.timestamp.toLocaleDateString('sv-SE', timeOption)}
+                        </td>
+                        <td>
+                            {m.valueInGrams}  
+                        </td>
+                    </tr>
+                )}
+            </tbody>
+      </table>
     );
 }
 
