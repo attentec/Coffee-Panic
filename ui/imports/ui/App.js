@@ -7,7 +7,7 @@ import  { Measurements } from '../api/measurements.js';
 function RenderLoggedIn(props) {
     return (
       <div className="container">
-        {/* <AccountsUIWrapper /> */}
+        <AccountsUIWrapper />
         <header>
           <h1>Coffee-Panic</h1>
           <ShoppingList measurements={props.measurements}/>
@@ -19,7 +19,7 @@ function RenderLoggedIn(props) {
 function RenderGuest(props) {
     return (
       <div className="container">
-        {/* <AccountsUIWrapper /> */}
+        <AccountsUIWrapper />
         <header>
           <h1>Coffee-Panic</h1>
           Please log in to view shopping list
@@ -40,10 +40,10 @@ function CoffeeList(props) {
 // App component - represents the whole app
 class App extends Component {
   render() {
-  	// if (this.props.user) {
+  	if (this.props.user) {
       return <RenderLoggedIn measurements={this.props.measurements} />
-  	// }
-    // return <RenderGuest />;
+  	}
+    return <RenderGuest />;
   }
 }
 
