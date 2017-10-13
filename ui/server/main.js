@@ -7,7 +7,7 @@ import basicAuth from 'basic-auth';
 import bodyParser from 'body-parser';
 import { STATUS_CODES } from "http";
 
-const allowedScales = [ 'linköping', 'stockholm', ]
+const allowedScales = [ 'linkoping', 'stockholm', ]
 
 function basicAuthentication(req, res, next) {
   function unauthorized(res) {
